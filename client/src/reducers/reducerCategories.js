@@ -4,10 +4,16 @@ import {
 	CATEGORY_DELETE,
 	CATEGORY_SET_CURRENT,
 	CATEGORY_LIST_LOADED,
+	CATEGORY_TREEVIEW_LOADED,
 } from '../constants/category'
 
-export default (state = { categories: [] }, action) => {
+export default (state = { categories: [], categoriesTreeView: [] }, action) => {
 	switch (action.type) {
+		case CATEGORY_TREEVIEW_LOADED:
+			return {
+				...state,
+				categoriesTreeView: action.payload.categoriesTreeView,
+			}
 		case CATEGORY_LIST_LOADED:
 			return {
 				...state,

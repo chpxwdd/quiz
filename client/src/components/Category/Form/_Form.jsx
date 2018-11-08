@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { FormGroup, FormControl, ControlLabel, HelpBlock, Button } from 'react-bootstrap'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import {
+	actionCategoryCreate,
+	actionCategoryUpdate,
+	actionCategoryListLoaded,
+	actionCategoryTreeViewLoaded,
+} from '../../../actions/actionCategories'
 
 class Form extends Component {
 	constructor(props) {
@@ -23,6 +31,7 @@ class Form extends Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.currentCategory) {
 			this.setState({
+				// index: nextProps.currentCategory.index,
 				title: nextProps.currentCategory.title,
 				description: nextProps.currentCategory.description,
 				parent: nextProps.currentCategory.parent,
@@ -56,6 +65,10 @@ class Form extends Component {
 	}
 
 	handleChangeField(key, event) {
+		// if (key === 'parent') {
+		// console.log(event.target)
+		// }
+
 		this.setState({
 			[key]: event.target.value,
 		})
@@ -112,4 +125,21 @@ class Form extends Component {
 		)
 	}
 }
+// const mapStateToProps = state => ({
+// 	currentCategory: state.category.currentCategory,
+// 	categories: state.category.categories,
+// 	categoriesTreeView: state.category.categoriesTreeView,
+// })
+
+// const mapDispatchToProps = dispatch => ({
+// 	actionCategoryTreeViewLoaded: bindActionCreators(actionCategoryTreeViewLoaded, dispatch),
+// 	actionCategoryListLoaded: bindActionCreators(actionCategoryListLoaded, dispatch),
+// 	actionCategoryCreate: bindActionCreators(actionCategoryCreate, dispatch),
+// 	actionCategoryUpdate: bindActionCreators(actionCategoryUpdate, dispatch),
+// })
+
+// export default connect(
+// 	mapStateToProps,
+// 	mapDispatchToProps
+// )(Form)
 export default Form

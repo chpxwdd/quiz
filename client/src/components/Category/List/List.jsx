@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { ListGroupItem, ListGroup, ButtonToolbar, Button, ButtonGroup } from 'react-bootstrap'
+import { ListGroupItem, ListGroup, Glyphicon, Button } from 'react-bootstrap'
 import { bindActionCreators } from 'redux'
-import moment from 'moment'
+// import moment from 'moment'
 import { connect } from 'react-redux'
-import jQuery from 'jquery'
 import {
 	actionCategoryDelete,
+	actionCategoryTreeViewLoaded,
 	actionCategoryListLoaded,
 	actionCategorySetCurrent,
 } from '../../../actions/actionCategories'
@@ -17,15 +17,21 @@ import Form from '../Form'
 class List extends Component {
 	constructor(props) {
 		super(props)
-
 		this.handleDelete = this.handleDelete.bind(this)
 		this.handleEdit = this.handleEdit.bind(this)
 	}
 
 	componentDidMount() {
-		const { actionCategoryListLoaded } = this.props
+		var treeView = []
 
-		axios('http://localhost:3333/api/categories').then(res => actionCategoryListLoaded(res.data))
+		const { actionCategoryListLoaded, actionCategoryTreeViewLoaded } = this.props
+
+		axios('http://localhost:3333/api/categories').then(res => {
+			actionCategoryListLoaded(res.data)
+		})
+		// axios('http://localhost:3333/api/categories/children/root').then(res => {
+		// 	actionCategoryTreeViewLoaded(res.data)
+		// })
 	}
 
 	handleDelete(id) {
@@ -33,31 +39,45 @@ class List extends Component {
 		return axios.delete(`http://localhost:3333/api/categories/${id}`).then(() => actionCategoryDelete(id))
 	}
 
-	handleEdit(category, event) {
-		// console.log(category)
-		// console.log(event)
-		const { actionCategorySetCurrent, categories } = this.props
+	handleEdit(category) {
+		const { actionCategorySetCurrent } = this.props
 		actionCategorySetCurrent(category)
 	}
 
 	render() {
-		const { categories } = this.props
-
+		const { categories, categoriesTreeView, actionCategoryCreate } = this.props
 		return (
 			<div>
-				<Form />
-				<ListGroup>
-					{categories.map((category, key) => {
+				<Form categories={categories} actionCategoryCreate={actionCategoryCreate} />
+				<br />
+				<ListGroup componentClass="div">
+					{categoriesTreeView.map((category, key) => {
 						return (
-							<ListGroupItem
-								key={'item' + key}
-								className="list-group-item "
-								onClick={event => this.handleEdit(category, event)}
-							>
-								<h4 className="list-group-item-heading">{category.title}</h4>
-								<p className="list-group-item-text">{category.description}</p>
-								<small className="pull-right">{moment(new Date(category.createdAt)).fromNow()}</small>
-								<div className="clearfix" />
+							<ListGroupItem key={'item' + key} header={category.title}>
+								{category.description}
+
+								<Button
+									componentClass="a"
+									bsSize="sm"
+									bsStyle="default"
+									onClick={() => {
+										this.handleEdit(category)
+									}}
+								>
+									<Glyphicon glyph="edit" />
+									&nbsp; Edit
+								</Button>
+								<Button
+									componentClass="a"
+									bsSize="sm"
+									bsStyle="danger"
+									onClick={() => {
+										if (window.confirm('Are you sure you wish to delete this item?')) this.handleDelete(category._id)
+									}}
+								>
+									<Glyphicon glyph="trash" />
+									&nbsp; Delete
+								</Button>
 							</ListGroupItem>
 						)
 					})}
@@ -66,18 +86,5 @@ class List extends Component {
 		)
 	}
 }
-const mapStateToProps = state => ({
-	categories: state.category.categories,
-})
 
-const mapDispatchToProps = dispatch => ({
-	// onSubmit: data => dispatch(categoryCreate),
-	// onEdit: data => dispatch(categoryUpdate),
-	actionCategoryListLoaded: bindActionCreators(actionCategoryListLoaded, dispatch),
-	actionCategoryDelete: bindActionCreators(actionCategoryDelete, dispatch),
-	actionCategorySetCurrent: bindActionCreators(actionCategorySetCurrent, dispatch),
-})
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(List)
+export default List

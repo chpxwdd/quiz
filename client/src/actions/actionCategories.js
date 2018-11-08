@@ -3,6 +3,7 @@ import {
 	CATEGORY_UPDATE,
 	CATEGORY_DELETE,
 	CATEGORY_LIST_LOADED,
+	CATEGORY_TREEVIEW_LOADED,
 	CATEGORY_SET_CURRENT,
 } from '../constants/category'
 
@@ -10,6 +11,13 @@ export const actionCategoryListLoaded = list => {
 	return {
 		type: CATEGORY_LIST_LOADED,
 		payload: list,
+	}
+}
+
+export const actionCategoryTreeViewLoaded = treeView => {
+	return {
+		type: CATEGORY_TREEVIEW_LOADED,
+		payload: treeView,
 	}
 }
 

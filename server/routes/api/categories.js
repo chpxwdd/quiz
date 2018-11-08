@@ -21,16 +21,19 @@ router.post("/", (req, res, next) => {
     });
   }
 
-  const finalCategory = new Categories(body);
-  return finalCategory
+  const modelCategories = new Categories(body);
+  return modelCategories
     .save()
-    .then(() => res.json({ category: finalCategory.toJSON() }))
+    .then(() => res.json({ category: modelCategories.toJSON() }))
     .catch(next);
 });
 
+/**
+ * GET ALL CATEGORIES
+ */
 router.get("/", (req, res, next) => {
   return Categories.find()
-    .sort({ createdAt: "descending" })
+    .sort({ title: "ascending" })
     .then(categories =>
       res.json({ categories: categories.map(category => category.toJSON()) })
     )
@@ -65,6 +68,10 @@ router.patch("/:id", (req, res, next) => {
     req.category.description = body.description;
   }
 
+  if (typeof body.parent !== "undefined") {
+    req.category.parent = body.parent;
+  }
+
   return req.category
     .save()
     .then(() => res.json({ category: req.category.toJSON() }))
@@ -74,6 +81,28 @@ router.patch("/:id", (req, res, next) => {
 router.delete("/:id", (req, res, next) => {
   return Categories.findByIdAndRemove(req.category._id)
     .then(() => res.sendStatus(200))
+    .catch(next);
+});
+
+router.get("/children/root", (req, res, next) => {
+  return Categories.find({ parent: null })
+    .sort({ title: "ascending" })
+    .then(categories =>
+      res.json({
+        categoriesTreeView: categories.map((category, key) => {
+          return category.toJSON();
+        })
+      })
+    )
+    .catch(next);
+});
+
+router.get("/children/:id", (req, res, next) => {
+  return Categories.find({ parent: req.category.id })
+    .sort({ title: "ascending" })
+    .then(categories =>
+      res.json({ categories: categories.map(category => category.toJSON()) })
+    )
     .catch(next);
 });
 
