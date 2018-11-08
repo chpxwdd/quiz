@@ -4,35 +4,69 @@ import { Route, Switch, Link } from 'react-router-dom'
 import Quiz from './Quiz'
 import Result from './Result'
 
+const config = [
+	{
+		name: 'quiz',
+		component: Quiz,
+		route: '/dashboard/quiz',
+		glyph: 'education',
+		label: 'Quiz',
+		title: 'Quiz list',
+		lead: 'selected you quiz',
+	},
+	{
+		name: 'result',
+		component: Result,
+		route: '/dashboard/result',
+		glyph: 'stats',
+		label: 'Results',
+		title: 'Statistics & Results',
+		lead: 'show all results for any quiz',
+	},
+]
 export default class Dashboard extends Component {
+	constructor(props) {
+		super(props)
+		this.config = config
+		this.state = {
+			current: config[0],
+		}
+		this.handleSelect = this.handleSelect.bind(this)
+	}
+
+	handleSelect(key) {
+		this.setState({ current: config[key] })
+	}
 	render() {
+		const { current } = this.state
 		return (
 			<div className="container-dasboard">
-				<Nav bsStyle="tabs" activeKey="1" onSelect={k => this.handleSelect(k)} pullRight>
-					<NavItem
-						componentClass={Link}
-						to="/dashboard/quiz"
-						href="/dashboard/quiz"
-						active={window.location.pathname === '/dashboard/quiz'}
-					>
-						<Glyphicon glyph="education" /> Quiz
-					</NavItem>
-					<NavItem
-						componentClass={Link}
-						to="/dashboard/result"
-						href="/dashboard/result"
-						active={window.location.pathname === '/dashboard/result'}
-					>
-						<Glyphicon glyph="stats" /> Results
-					</NavItem>
+				<PageHeader>
+					Dashboard <small>space for all residents</small>
+				</PageHeader>
+				<Nav bsStyle="tabs" activeKey={current.eventKey} pullRight>
+					{this.config.map((item, key) => {
+						return (
+							<NavItem
+								key={key}
+								eventKey={key}
+								componentClass={Link}
+								to={item.route}
+								href={item.route}
+								active={window.location.pathname === item.route}
+								onSelect={k => this.handleSelect(k)}
+							>
+								<Glyphicon glyph={item.glyph} /> {item.label}
+							</NavItem>
+						)
+					})}
 				</Nav>
 				<Clearfix />
-				<PageHeader>
-					title <small>Subtext for header</small>
-				</PageHeader>
+				<br />
 				<Switch>
-					<Route path="/dashboard/quiz" component={() => <Quiz />} />
-					<Route path="/dashboard/result" component={() => <Result />} />
+					{this.config.map((item, key) => {
+						return <Route path={item.route} key={key} component={item.component} />
+					})}
 				</Switch>
 			</div>
 		)
