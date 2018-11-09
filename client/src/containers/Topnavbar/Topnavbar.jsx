@@ -9,22 +9,16 @@ class Topnavbar extends Component {
 				<Navbar fixedTop inverse collapseOnSelect>
 					<Navbar.Header>
 						<Navbar.Brand>
-							<a href="javascript:void(0)">cUniQuiz</a>
+							<a href="/">
+								<Glyphicon glyph="education" /> cUniQuiz
+							</a>
 						</Navbar.Brand>
 						<Navbar.Toggle />
 					</Navbar.Header>
 					<Navbar.Collapse>
 						<Nav pullLeft>
-							<NavItem componentClass={Link} href="/" to="/" active={window.location.pathname === '/'}>
-								<Glyphicon glyph="home" />{' '}
-							</NavItem>
-							<NavItem
-								componentClass={Link}
-								href="/dashboard"
-								to="/dashboard"
-								active={window.location.pathname === '/dashboard'}
-							>
-								<Glyphicon glyph="dashboard" /> Dashboard
+							<NavItem componentClass={Link} href="/quiz" to="/quiz" active={window.location.pathname === '/quiz'}>
+								Quiz
 							</NavItem>
 						</Nav>
 						<Navbar.Form pullRight>

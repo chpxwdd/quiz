@@ -12,6 +12,7 @@ import {
 } from '../../../actions/actionCategories'
 import Form from '../../components/Form'
 import List from '../../components/List'
+import TreeView from '../../components/TreeView'
 
 class Category extends Component {
 	componentDidMount() {
@@ -26,15 +27,11 @@ class Category extends Component {
 	}
 
 	render() {
-		console.log(this.props)
+		// console.log(this.props)
 		const { currentCategory, categories, categoriesTreeView } = this.props
 
-		return (
-			<div>
-				<Form />
-				<List />
-			</div>
-		)
+		return <div>{/* <Form />
+				<List /> */}</div>
 	}
 }
 const mapStateToProps = state => ({
