@@ -17,9 +17,9 @@ class Topnavbar extends Component {
 					</Navbar.Header>
 					<Navbar.Collapse>
 						<Nav pullLeft>
-							<NavItem componentClass={Link} href="/quiz" to="/quiz" active={window.location.pathname === '/quiz'}>
+							{/* <NavItem componentClass={Link} href="/quiz" to="/quiz" active={window.location.pathname === '/quiz'}>
 								Quiz
-							</NavItem>
+							</NavItem> */}
 						</Nav>
 						<Navbar.Form pullRight>
 							<FormGroup>

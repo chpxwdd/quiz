@@ -5,7 +5,7 @@ import {
 	CATEGORY_SET_CURRENT,
 	CATEGORY_LIST_LOADED,
 	CATEGORY_TREEVIEW_LOADED,
-} from '../constants/category'
+} from '../constants/category-constants'
 
 export default (state = { categories: [], categoriesTreeView: [] }, action) => {
 	switch (action.type) {
