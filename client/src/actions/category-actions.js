@@ -5,7 +5,7 @@ import {
 	CATEGORY_LIST_LOADED,
 	CATEGORY_TREEVIEW_LOADED,
 	CATEGORY_SET_CURRENT,
-} from '../constants/category'
+} from '../constants/category-constants'
 
 export const actionCategoryListLoaded = list => {
 	return {
